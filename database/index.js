@@ -14,16 +14,23 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (user,callback) => {
+let save = (repo,callback) => {
+  let data = new Repo(repo)
+  return new Promise((resolve, rejection)=>{
+    data.save((err,res) =>{
+      if (err) {
+          rejection(err);
+      } else {
+      resolve(res);
+      }
+    })
+  })
+  
   
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
-  if (err) {
-    console.log('Error', err);
-  } else {
-    console.log('Success');
-  }
+  
 };
 
 

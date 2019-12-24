@@ -11,22 +11,29 @@ app.post('/repos', function (req, res) {
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
-  var that = this;
-  data.JSON.stringify({username: term})
-  sucsses:function(result){
-    that.setstate
-    
-  }
-  $.ajax({
-    url: "https://api.github.com/repos",
-    jsonp: true,
-    method: "POST",
-    dataType: "json",
-    success: function(res) {
-      console.log(res)
-    }
-  });
   let username = req.body.username;
+  return new Promise ((resolve,reject)=>{
+  db.find(username).then((data)=>{
+    if (data.length === 0){
+      res.send(data)
+    }else{
+      resolve(data)
+    }
+  }).then((username)=>{
+    return helper.getReposByUsername({username})
+  }).then((data)=>{
+    res.send(data)
+  }).catch((err)=>{
+    console.log(err)
+  })
+
+
+  })
+
+ 
+  }
+  
+
   
   var data = github.getReposByUsername(req.body.username,(data)=>{
     console.log(JSON.parse(data))
@@ -39,15 +46,11 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  $.ajax({
-    url: "https://api.github.com/repos",
-    jsonp: true,
-    method: "GET",
-    dataType: "json",
-    success: function(res) {
-      console.log(res)
-    }
-  });
+
+
+
+
+
 });
 
 let port = 1128;
